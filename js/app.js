@@ -1,6 +1,61 @@
 var diff = 15;
 var enemySpeed = 300;
+var go = false;
+var characters = ['images/char-boy.png', 'images/char-cat-girl.png', 'images/char-horn-girl.png', 'images/char-pink-girl.png', 'images/char-princess-girl.png', 'images/char-boy.png'];
+var Startscreen = function(sprites, x, y) {
+    this.sprites = characters;
+    this.x = x;
+    this.y = y;
+}
 
+Startscreen.prototype.menu = function(keys) {
+    ctx.beginPath();
+    ctx.fillStyle = "blue";
+    ctx.fillRect(0, 0, 505, 606);
+    ctx.closePath();
+
+    ctx.beginPath();
+    ctx.fillStyle = "gray";
+    ctx.fillRect(50, 50, 405, 500);
+    ctx.closePath();
+
+    ctx.beginPath();
+    ctx.font = "30px Ariel";
+    ctx.fillStyle = "yellow";
+    ctx.fillText("Use 'shift' to Select Character", 90, 120);
+    ctx.closePath();
+
+    ctx.beginPath();
+    ctx.drawImage(Resources.get(this.sprites[0]),200,150,140,250);
+
+    switch(keys) {
+        case 'shift':
+
+            if(this.sprites[0]) {
+                this.sprites[0] = this.sprites[1];
+            }
+            if(this.sprites[1]) {
+                this.sprites[1] = this.sprites[2];
+            }
+            if(this.sprites[2]) {
+                this.sprites[2] = this.sprites[3];
+            }
+            if(this.sprites[3]) {
+                this.sprites[3] = this.sprites[4];
+            }
+            if(this.sprites[4]) {
+               this.sprites[4] = this.sprites[5];
+            }
+            if(this.sprites[5]) {
+                this.sprites[5] = this.sprites[0];
+            }
+            break;
+        case 'spacebar':
+            go = true;
+            break;
+    }
+    ctx.closePath();
+}
 // Enemies our player must avoid
 var Enemy = function(x, y) {
     // Variables applied to each of our instances go here,
@@ -48,7 +103,7 @@ Enemy.prototype.render = function() {
 var Player = function() {
     this.x = 202;
     this.y = 404;
-    this.sprite = 'images/char-boy.png';
+    this.sprite = characters;
 }
 
 Player.prototype.update = function() {
@@ -81,7 +136,7 @@ Player.prototype.update = function() {
 };
 
 Player.prototype.render = function() {
-    ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+    ctx.drawImage(Resources.get(this.sprite[0]), this.x, this.y);
 };
 
 Player.prototype.handleInput = function(key) {
@@ -96,12 +151,14 @@ Player.prototype.resetGame = function() {
 // Now instantiate your objects.
 // Place all enemy objects in an array called allEnemies
 // Place the player object in a variable called player
-
+var startScreen = new Startscreen(0,0);
 var enemyOne = new Enemy(0, 60);
 var enemyTwo = new Enemy(0, 143);
 var enemyThree = new Enemy(0, 226);
 var allEnemies = [enemyOne, enemyTwo, enemyThree];
 var player = new Player();
+
+
 
 // This listens for key presses and sends the keys to your
 // Player.handleInput() method. You don't need to modify this.
@@ -110,9 +167,12 @@ document.addEventListener('keyup', function(e) {
         37: 'left',
         38: 'up',
         39: 'right',
-        40: 'down'
+        40: 'down',
+        16: 'shift',
+        32: 'spacebar'
     };
 
     player.handleInput(allowedKeys[e.keyCode]);
+    startScreen.menu(allowedKeys[e.keyCode]);
 });
 
