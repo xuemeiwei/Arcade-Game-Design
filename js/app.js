@@ -1,13 +1,14 @@
-var diff = 15;
-var enemySpeed = 300;
-var go = false;
+var diff = 15;// parameters used to define the condition for collision
+var enemySpeed = 300;// parameters used for generation of enemyspeed
+var go = false;// parameter for whether to show the main page
 var characters = ['images/char-boy.png', 'images/char-cat-girl.png', 'images/char-horn-girl.png', 'images/char-pink-girl.png', 'images/char-princess-girl.png', 'images/char-boy.png'];
+
+// The definition for start screen
 var Startscreen = function(sprites, x, y) {
     this.sprites = characters;
     this.x = x;
     this.y = y;
 }
-
 Startscreen.prototype.menu = function(keys) {
     ctx.beginPath();
     ctx.fillStyle = "blue";
@@ -22,15 +23,19 @@ Startscreen.prototype.menu = function(keys) {
     ctx.beginPath();
     ctx.font = "30px Ariel";
     ctx.fillStyle = "yellow";
-    ctx.fillText("Use 'shift' to Select Character", 90, 120);
+    ctx.fillText("Use 'shift' to Toggle Character", 90, 120);
+    ctx.closePath();
+
+    ctx.beginPath();
+    ctx.font = "30px Ariel";
+    ctx.fillStyle = "yellow";
+    ctx.fillText("Use 'Space' to Select", 90, 160);
     ctx.closePath();
 
     ctx.beginPath();
     ctx.drawImage(Resources.get(this.sprites[0]),200,150,140,250);
-
     switch(keys) {
         case 'shift':
-
             if(this.sprites[0]) {
                 this.sprites[0] = this.sprites[1];
             }
@@ -56,6 +61,7 @@ Startscreen.prototype.menu = function(keys) {
     }
     ctx.closePath();
 }
+
 // Enemies our player must avoid
 var Enemy = function(x, y) {
     // Variables applied to each of our instances go here,
@@ -151,13 +157,13 @@ Player.prototype.resetGame = function() {
 // Now instantiate your objects.
 // Place all enemy objects in an array called allEnemies
 // Place the player object in a variable called player
+// Create the start screen
 var startScreen = new Startscreen(0,0);
 var enemyOne = new Enemy(0, 60);
 var enemyTwo = new Enemy(0, 143);
 var enemyThree = new Enemy(0, 226);
 var allEnemies = [enemyOne, enemyTwo, enemyThree];
 var player = new Player();
-
 
 
 // This listens for key presses and sends the keys to your
@@ -171,7 +177,6 @@ document.addEventListener('keyup', function(e) {
         16: 'shift',
         32: 'spacebar'
     };
-
     player.handleInput(allowedKeys[e.keyCode]);
     startScreen.menu(allowedKeys[e.keyCode]);
 });

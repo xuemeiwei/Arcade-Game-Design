@@ -47,10 +47,11 @@ var Engine = (function(global) {
          */
         update(dt);
 
+        //Initially the value of go is false, the main page to select will be shown
         if(go) {
             render();
         }else{
-            startScreen.menu();
+            startScreen.menu();//Starting screen to select the character you want
         }
 
 
